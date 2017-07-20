@@ -22,7 +22,6 @@ $di->set('db', function () {
 		]
 	);
 }
-
 );
 $app = new Micro($di);
 // Retrieves all notices
@@ -118,15 +117,12 @@ $app->put(
 	'/notices/{id:[0-9]+}',
 	function ($id) use ($app) {
 		$notice = Notice::findFirstByid($id);
-
 		$row = $this->request->getJsonRawBody();
-
 		$notice->title = $row->title;
 		$notice->description = $row->description;
 		$notice->author = $row->author;
-
 		// Create a response
-
+		$response = new Response();
 		// Check if the in	$response = new Response();sertion was successful
 		if ($notice->update()) {
 			$response->setJsonContent(
