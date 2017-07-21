@@ -26,7 +26,7 @@ $di->set('db', function () {
 $app = new Micro($di);
 // Retrieves all notices
 $app->get('/notices', function () use ($app) {
-	$notice = Notice::find();
+	$notice = Notice::find("soft_delete !=1");
 	foreach ($notice as $noti) {
 		$data[] = [
 			'id' => $noti->id,
@@ -34,41 +34,11 @@ $app->get('/notices', function () use ($app) {
 			'description' => $noti->description,
 			'author' => $noti->author,
 			'created_date' => $noti->created_date,
+
 		];
 	}
 	echo json_encode($data);
 });
-// Retrieves notices based on primary key
-$app->get(
-	'/notices/{id:[0-9]+}',
-	function ($id) use ($app) {
-		$notice = Notice::findFirstByid($id);
-		// Create a response
-		$response = new Response();
-		if ($notice === false) {
-			$response->setJsonContent(
-				[
-					'status' => 'NOT-FOUND',
-				]
-			);
-		} else {
-			$response->setJsonContent(
-				[
-					'status' => 'FOUND',
-					'data' => [
-						'id' => $notice->id,
-						'title' => $notice->title,
-						'description' => $notice->description,
-						'author' => $notice->author,
-						'created_date' => $notice->created_date,
-					],
-				]
-			);
-		}
-
-		return $response;
-	}
-);
 // Adds a new notice
 $app->post(
 	'/notices',

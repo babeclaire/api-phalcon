@@ -50,5 +50,14 @@ class Notice extends \Phalcon\Mvc\Model {
 	 * @Column(type="string", nullable=true)
 	 */
 	public $reading;
+	/**
+	 * Allows to query the first record that match the specified conditions
+	 *
+	 * @param mixed $parameters
+	 * @return Notice|\Phalcon\Mvc\Model\ResultInterface
+	 */
+	public static function findFirst($parameters = null) {
+		return parent::findFirst($parameters);
+	}
 
 }
